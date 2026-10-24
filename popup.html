@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="سادىر پالۋان قالقىنى, sadir palwan qalqini, sadir palwan, ئېلان توسقۇچ, adblocker">
+  <title>سادىر پالۋان قالقىنى | Sadir Palwan</title>
+  <style>
+    :root {
+      --kok-flag: #00AFDE;
+      --kok-primary: #00AFDE;
+      --kok-light: #7CE8FF;
+      --kok-deep: #007699;
+      --kok-glow: rgba(0, 175, 222, 0.58);
+      --bg-main: #00526E;
+      --bg-gradient-top: #008EB8;
+      --bg-card: rgba(0, 32, 48, 0.85);
+      --bg-ghost-dark: rgba(0, 26, 40, 0.80);
+      --text-main: #FFFFFF;
+      --text-muted: #D8F6FF;
+      --border-glass: rgba(124, 232, 255, 0.42);
+      --shadow-elevated: 0 12px 26px -4px rgba(0, 16, 26, 0.62);
+      --danger-color: #F43F5E;
+      --success-color: #10B981;
+      --footer-green: #34D399;
+      --uyghur-font: 'UKIJ Tuz', 'ALKATIP Basma', 'Uyghur Pashto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    [data-theme="light"] {
+      --kok-flag: #00AFDE;
+      --kok-primary: #00AFDE;
+      --kok-light: #007FA3;
+      --kok-deep: #006887;
+      --kok-glow: rgba(0, 175, 222, 0.35);
+      --bg-main: #E6F8FF;
+      --bg-gradient-top: #B3ECFF;
+      --bg-card: rgba(255, 255, 255, 0.92);
+      --bg-ghost-dark: rgba(255, 255, 255, 0.85);
+      --text-main: #042633;
+      --text-muted: #155770;
+      --border-glass: rgba(0, 175, 222, 0.45);
+      --shadow-elevated: 0 10px 24px -5px rgba(0, 130, 170, 0.18);
+      --footer-green: #059669;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      width: 372px;
+      font-family: var(--uyghur-font);
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(circle at 50% 0%, var(--bg-gradient-top) 0%, var(--bg-main) 76%),
+        radial-gradient(circle at 85% 90%, rgba(0, 175, 222, 0.32), transparent 58%);
+      color: var(--text-main);
+      direction: rtl;
+      overflow: hidden;
+      padding: 13px 16px 12px;
+      position: relative;
+      transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s ease;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(0, 24, 38, 0.32);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #10B981;
+      box-shadow: 0 0 8px #10B981;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    body.paused .status-dot {
+      background-color: var(--danger-color);
+      box-shadow: 0 0 8px var(--danger-color);
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border-glass);
+      background: var(--bg-card);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--kok-light);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px var(--kok-glow);
+    }
+
+    .hero-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 11px 10px 13px;
+      margin-bottom: 9px;
+      border-radius: 18px;
+      overflow: hidden;
+      z-index: 2;
+      border: 1px solid rgba(124, 232, 255, 0.38);
+      background: linear-gradient(180deg, rgba(0, 48, 68, 0.45) 0%, rgba(0, 28, 42, 0.65) 100%);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18);
+    }
+
+    [data-theme="light"] .hero-section {
+      background: linear-gradient(180deg, rgba(0, 175, 222, 0.14) 0%, rgba(255, 255, 255, 0.65) 100%);
+      border-color: rgba(0, 175, 222, 0.38);
+    }
+
+    .hero-bg-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    body.paused .hero-bg-canvas {
+      opacity: 0.20;
+    }
+
+    .emblem-wrapper {
+      position: relative;
+      z-index: 2;
+      width: 108px;
+      height: 112px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emblem-aura {
+      position: absolute;
+      inset: 4px;
+      border-radius: 36% 36% 48% 48%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(0, 175, 222, 0.48) 48%, transparent 72%);
+      filter: blur(6px);
+      animation: auraBreathe 3.8s ease-in-out infinite;
+    }
+
+    body.paused .emblem-aura {
+      animation-play-state: paused;
+      opacity: 0.25;
+    }
+
+    @keyframes auraBreathe {
+      0%, 100% { transform: scale(0.95); opacity: 0.55; }
+      50% { transform: scale(1.08); opacity: 0.95; }
+    }
+
+    .shield-emblem {
+      position: relative;
+      z-index: 3;
+      width: 100px;
+      height: 102px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 6px 16px rgba(0, 24, 38, 0.72)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.38));
+      will-change: transform;
+      animation: gentleShieldFloat 4.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+      transition: filter 0.35s ease, transform 0.35s ease;
+    }
+
+    .shield-emblem svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .shield-sweep-rtl {
+      animation: sweepRightToLeft 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    .shield-sweep-btt {
+      animation: sweepBottomToTop 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    body.paused .shield-sweep-rtl,
+    body.paused .shield-sweep-btt {
+      animation-play-state: paused;
+      opacity: 0;
+    }
+
+    @keyframes sweepRightToLeft {
+      0% { transform: translateX(220px); opacity: 0; }
+      4% { opacity: 0.95; }
+      22% { transform: translateX(-220px); opacity: 0.95; }
+      25%, 100% { transform: translateX(-220px); opacity: 0; }
+    }
+
+    @keyframes sweepBottomToTop {
+      0%, 49% { transform: translateY(230px); opacity: 0; }
+      53% { opacity: 0.95; }
+      72% { transform: translateY(-230px); opacity: 0.95; }
+      75%, 100% { transform: translateY(-230px); opacity: 0; }
+    }
+
+    body.paused .shield-emblem {
+      animation-play-state: paused;
+      filter: grayscale(0.45) brightness(0.85);
+    }
+
+    @keyframes gentleShieldFloat {
+      0%, 100% { transform: translate3d(0, 0px, 0) scale(1); }
+      50% { transform: translate3d(0, -4px, 0) scale(1.03); }
+    }
+
+    .title-wrap {
+      margin-top: 5px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .shimmer-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      padding: 2px 8px;
+      background: linear-gradient(
+        110deg,
+        #FFFFFF 0%,
+        #FFFFFF 38%,
+        #B8F0FF 46%,
+        #FFFFFF 50%,
+        #7CE8FF 54%,
+        #FFFFFF 62%,
+        #FFFFFF 100%
+      );
+      background-size: 260% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: titleLightSweep 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 2px 10px rgba(0, 30, 44, 0.65));
+    }
+
+    [data-theme="light"] .shimmer-title {
+      background: linear-gradient(
+        110deg,
+        #005F7A 0%,
+        #005F7A 40%,
+        #00AFDE 48%,
+        #0088B0 52%,
+        #005F7A 60%,
+        #005F7A 100%
+      );
+      background-size: 260% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(0, 175, 222, 0.25));
+    }
+
+    @keyframes titleLightSweep {
+      0%, 72% { background-position: 140% 0; }
+      100% { background-position: -60% 0; }
+    }
+
+    .subtitle-pill {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 300;
+      letter-spacing: 0.2px;
+      opacity: 0.92;
+    }
+
+    .operations-zone {
+      position: relative;
+      z-index: 2;
+      border-radius: 20px;
+      overflow: hidden;
+      padding: 2px;
+    }
+
+    .geo-canvas-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      opacity: 0.48;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    body.paused .geo-canvas-bg {
+      opacity: 0.18;
+    }
+
+    .glass-card {
+      position: relative;
+      z-index: 2;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
+      padding: 12px 16px 10px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-elevated);
+      margin-bottom: 9px;
+      transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.3s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.68);
+    }
+
+    .counter-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
+
+    .counter-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .live-tag {
+      font-size: 11.5px;
+      padding: 3px 11px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF !important;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.42);
+      letter-spacing: 0.2px;
+    }
+
+    body.paused .live-tag {
+      background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+      color: #FFFFFF !important;
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 3px 10px rgba(244, 63, 94, 0.4);
+    }
+
+    .counter-display {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 8px;
+      padding: 2px 0 2px;
+    }
+
+    .counter-number {
+      font-size: 40px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: #FFFFFF;
+      text-shadow: 0 2px 18px var(--kok-glow);
+      line-height: 1.05;
+      letter-spacing: 1px;
+    }
+
+    [data-theme="light"] .counter-number {
+      color: #00AFDE;
+    }
+
+    .counter-unit {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .controls-row {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
+    .ctrl-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-family: var(--uyghur-font);
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .ctrl-btn svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.25s ease;
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, #FFFFFF 0%, #E6F8FF 100%);
+      color: #004E66;
+      border: 1.5px solid #FFFFFF;
+      box-shadow: 0 6px 18px rgba(0, 24, 38, 0.35), 0 0 14px rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-start.active-state {
+      background: linear-gradient(135deg, #FFFFFF 0%, #F0FAFF 100%);
+      color: #004E66;
+      border-color: #FFFFFF;
+      box-shadow: 0 6px 22px rgba(255, 255, 255, 0.52);
+    }
+
+    [data-theme="light"] .btn-start,
+    [data-theme="light"] .btn-start.active-state {
+      background: linear-gradient(135deg, #00AFDE 0%, #007FA3 100%);
+      color: #FFFFFF;
+      border-color: rgba(0, 175, 222, 0.85);
+      box-shadow: 0 6px 18px rgba(0, 175, 222, 0.35);
+    }
+
+    .btn-stop {
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.38) 0%, rgba(159, 18, 57, 0.55) 100%);
+      color: #FFE4E6;
+      border: 1.5px solid rgba(251, 113, 133, 0.62);
+      box-shadow: 0 6px 16px rgba(0, 20, 32, 0.38);
+    }
+
+    [data-theme="light"] .btn-stop {
+      background: linear-gradient(135deg, #003A4D 0%, #002633 100%);
+      color: #FFFFFF;
+      border-color: rgba(0, 90, 120, 0.65);
+      box-shadow: 0 6px 16px rgba(0, 58, 77, 0.22);
+    }
+
+    .btn-stop.active-state,
+    [data-theme="light"] .btn-stop.active-state {
+      background: linear-gradient(135deg, #F43F5E 0%, #BE123C 100%);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 6px 20px rgba(244, 63, 94, 0.48);
+    }
+
+    .ctrl-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+    }
+
+    .ctrl-btn:active:not(:disabled) {
+      transform: translateY(0px) scale(0.98);
+    }
+
+    .ctrl-btn:disabled {
+      opacity: 0.90;
+      cursor: default;
+    }
+
+    .secondary-actions {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+
+    .Ghost-btn {
+      flex: 1;
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px dashed var(--border-glass);
+      background: var(--bg-ghost-dark);
+      color: var(--text-muted);
+      font-family: var(--uyghur-font);
+      font-size: 11.5px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+    }
+
+    [data-theme="light"] .Ghost-btn {
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .Ghost-btn:hover {
+      color: var(--text-main);
+      border-color: #FFFFFF;
+      background: var(--bg-card);
+    }
+
+    .manifesto-box {
+      position: relative;
+      z-index: 2;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 15px;
+      padding: 10px 14px;
+      margin-bottom: 6px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .manifesto-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--kok-light);
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .uyghur-paragraph {
+      font-size: 11.4px;
+      line-height: 1.76;
+      color: var(--text-main);
+      text-align: justify;
+      text-justify: inter-word;
+      text-indent: 1.75em;
+      opacity: 0.96;
+    }
+
+    .footer-bar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding-top: 2px;
+    }
+
+    .footer-privacy-green {
+      color: var(--footer-green);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.28);
+    }
+
+    .footer-privacy-green::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--footer-green);
+      box-shadow: 0 0 6px var(--footer-green);
+    }
+
+    .toast-msg {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: linear-gradient(135deg, #00AFDE 0%, #007699 100%);
+      color: #fff;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .toast-msg.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <div class="security-badge" id="statusBadge">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">قوغداش ئاكتىپ — ئىز قوغلاش: نۆل</span>
+    </div>
+    <button class="icon-btn" id="themeToggleBtn" title="كۈندۈز / كېچە ھالىتىنى ئالماشتۇرۇش" aria-label="كۈندۈز / كېچە ھالىتىنى ئالماشتۇرۇش">
+      <svg id="themeIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+  </header>
+
+  <section class="hero-section">
+    <canvas class="hero-bg-canvas" id="heroBgCanvas" width="340" height="165" aria-hidden="true"></canvas>
+
+    <div class="emblem-wrapper">
+      <div class="emblem-aura" aria-hidden="true"></div>
+      <div class="shield-emblem" id="shieldEmblem" role="img" aria-label="سادىر پالۋان قالقىنى — ئاي-يۇلتۇزلۇق كۆك بايراق قالقىنى">
+        <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="outerShieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#007EA3" />
+              <stop offset="100%" stop-color="#00485E" />
+            </linearGradient>
+            <linearGradient id="innerShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#14C2F0" />
+              <stop offset="50%" stop-color="#00AFDE" />
+              <stop offset="100%" stop-color="#008BB3" />
+            </linearGradient>
+            <mask id="crescentMask">
+              <rect width="200" height="220" fill="black" />
+              <circle cx="87.0" cy="92.0" r="30.0" fill="white" />
+              <circle cx="96.3" cy="92.0" r="24.0" fill="black" />
+            </mask>
+            <clipPath id="shieldClip">
+              <path d="M 100,12 C 127,29 154,38 170,42 C 169,124 146,174 100,208 C 54,174 31,124 30,42 C 46,38 73,29 100,12 Z" />
+            </clipPath>
+            <linearGradient id="shimmerGradRTL" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+              <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.68" />
+              <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="shimmerGradBTT" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+              <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.68" />
+              <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <path d="M 18,62 L 182,62 C 180,136 154,182 100,210 C 46,182 20,136 18,62 Z" fill="url(#outerShieldGrad)" stroke="#9EEBFF" stroke-width="2.5" opacity="0.96" />
+          <path d="M 100,12 C 127,29 154,38 170,42 C 169,124 146,174 100,208 C 54,174 31,124 30,42 C 46,38 73,29 100,12 Z" fill="url(#innerShieldGrad)" stroke="#FFFFFF" stroke-width="3" />
+          <circle cx="87.0" cy="92.0" r="30.0" fill="#FFFFFF" mask="url(#crescentMask)" />
+          <polygon points="108.5,92.0 117.19,89.18 117.19,80.04 122.56,87.43 131.25,84.61 125.88,92.0 131.25,99.39 122.56,96.57 117.19,103.96 117.19,94.82" fill="#FFFFFF" />
+          <g clip-path="url(#shieldClip)">
+            <rect class="shield-sweep-rtl" x="65" y="-20" width="70" height="260" fill="url(#shimmerGradRTL)" transform="skewX(-18)" />
+            <rect class="shield-sweep-btt" x="-20" y="75" width="240" height="70" fill="url(#shimmerGradBTT)" transform="skewY(-12)" />
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="title-wrap">
+      <h1 class="shimmer-title">سادىر پالۋان قالقىنى</h1>
+      <p class="subtitle-pill">شەرقىي تۈركىستان مۇستەقىل تور بىخەتەرلىك قالقىنى</p>
+    </div>
+  </section>
+
+  <main class="operations-zone">
+    <canvas class="geo-canvas-bg" id="geoCanvas" width="340" height="260" aria-hidden="true"></canvas>
+
+    <section class="glass-card">
+      <div class="counter-header">
+        <span class="counter-label">توسۇلغان بارلىق قىستۇرما ئېلانلار</span>
+        <span class="live-tag" id="engineTag">ئىشلەۋاتىدۇ</span>
+      </div>
+
+      <div class="counter-display">
+        <span class="counter-number" id="adsCounter">0</span>
+        <span class="counter-unit">دانە زىيانلىق ئېلان</span>
+      </div>
+    </section>
+
+    <section class="controls-row">
+      <button class="ctrl-btn btn-start active-state" id="startBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span>باشلاش</span>
+      </button>
+
+      <button class="ctrl-btn btn-stop" id="stopBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="6" width="12" height="12" rx="2"></rect>
+        </svg>
+        <span>توختىتىش</span>
+      </button>
+    </section>
+
+    <div class="secondary-actions">
+      <button class="Ghost-btn" id="simulateAdBtn" type="button">+ سىناق ئېلان توسۇش</button>
+      <button class="Ghost-btn" id="resetCounterBtn" type="button">ساناقنى نۆللەش</button>
+    </div>
+
+    <section class="manifesto-box">
+      <div class="manifesto-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        <span>مەخپىيەتلىك ۋە مۇستەقىللىق كاپالىتى</span>
+      </div>
+      <p class="uyghur-paragraph">
+        بۇ قىستۇرما شەرقىي تۈركىستان خەلقىنىڭ تور بىخەتەرلىكى، ئەركىنلىكى ۋە شەخسىي مەخپىيەتلىكىنى قوغداش ئۈچۈن مەخسۇس لايىھەلەنگەن. بارلىق سانلىق مەلۇماتلار پەقەت ئۆز كومپيۇتېرىڭىزدىلا ساقلىنىدۇ، خىتاي شىركەتلىرىنىڭ ھېچقانداق مۇلازىمىتى ياكى تاشقى ئىز قوغلاش كودلىرى قەتئىي ئىشلىتىلمىگەن شۇنداقلا ئەخلاقىي پاكلىق ئاساس قىلىنغان.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer-bar">
+    <span>نەشرى: 2.3.0 (Sadir Palwan)</span>
+    <span class="footer-privacy-green">مەخپىيەتلىك دەرىجىسى 100% يەرلىك</span>
+  </footer>
+
+  <div class="toast-msg" id="toastMsg" role="status" aria-live="polite"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
