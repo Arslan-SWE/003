@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ئەرەب تىلى (باكالوريا ئىلمىي) - ئۆگىنىش سۇپىسى</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=UKIJ+Tuz&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #09090B;
+            --bg-card: #18181B;
+            --bg-card-hover: #27272A;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-gold: #F59E0B;
+            --accent-emerald: #10B981;
+            --accent-cyan: #06B6D4;
+            --text-main: #F4F4F5;
+            --text-sub: #A1A1AA;
+            --sidebar-width: 320px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'UKIJ Tuz', 'Amiri', 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.8;
+            direction: rtl;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar / Table of Contents */
+        aside {
+            width: var(--sidebar-width);
+            background-color: var(--bg-card);
+            border-left: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+
+        .unit-section {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .unit-title {
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.05);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-list {
+            list-style: none;
+            padding: 5px 0;
+        }
+
+        .lesson-item {
+            padding: 10px 25px 10px 20px;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-right: 3px solid transparent;
+        }
+
+        .lesson-item:hover {
+            background-color: var(--bg-card-hover);
+            color: var(--text-main);
+        }
+
+        .lesson-item.active {
+            background-color: var(--bg-card-hover);
+            color: var(--accent-gold);
+            border-right-color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        /* Main Content Area */
+        main {
+            flex: 1;
+            margin-right: var(--sidebar-width);
+            padding: 40px;
+            max-width: calc(100% - var(--sidebar-width));
+        }
+
+        .content-header {
+            background: linear-gradient(135deg, #18181B, #27272A);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .content-header h1 {
+            font-size: 2rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+
+        .meta-tags {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-gold);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-gold);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--accent-gold);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Card Elements */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* Arabic Verse / Text Formatting */
+        .arabic-verse {
+            font-family: 'Amiri', serif;
+            font-size: 1.5rem;
+            color: #FBBF24;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            margin: 15px 0;
+            direction: rtl;
+            line-height: 2.2;
+        }
+
+        .verse-breakdown {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .verse-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .arabic-line {
+            font-family: 'Amiri', serif;
+            font-size: 1.3rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .uyghur-trans {
+            color: #34D399;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .grammar-irab {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            background: rgba(245,158,11,0.05);
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        /* Interactive Tools (Notes & Bookmark) */
+        .tools-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tool-btn {
+            background: var(--bg-card-hover);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tool-btn.bookmarked {
+            background: var(--accent-gold);
+            color: #000;
+        }
+
+        textarea.note-input {
+            width: 100%;
+            height: 120px;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            color: var(--text-main);
+            font-family: inherit;
+            resize: vertical;
+            margin-top: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            aside { width: 100%; height: auto; position: relative; }
+            main { margin-right: 0; max-width: 100%; padding: 20px; }
+            body { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar / Mundэриجە -->
+    <aside>
+        <div class="sidebar-header">
+            <h2>ئەرەب تىلى (باكالوريا ئىلمىي)</h2>
+            <p>سۈرىيە مائارىپ مىنىستىرلىقى كىتابى (2025-2026)</p>
+        </div>
+        <div id="toc-container">
+            <!-- Dynamically populated via JS -->
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <div class="tools-bar">
+            <button class="tool-btn" id="bookmark-btn" onclick="toggleBookmark()">⭐ سەل تۇرۇپ كۆرۈش (ساقلاش)</button>
+            <button class="tool-btn" onclick="window.print()">🖨️ بېسىپ چىقىرىش / ساقلاش</button>
+        </div>
+
+        <div class="content-header">
+            <h1 id="lesson-title">دەرىس تاللاڭ</h1>
+            <p id="lesson-subtitle">سول تەرەپتىكى مۇندەرىجىدىن خالىغان بىر باب ياكى دەرىسنى تاللاپ ئۆگىنىشنى باشلاڭ.</p>
+            <div class="meta-tags" id="lesson-tags">
+                <span class="tag">ئىلمىي بۆلۈم (العلمي)</span>
+                <span class="tag">تولۇق ئۇيغۇرچە شەرھ</span>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('overview')">1. ئومۇمىي گەۋدە (مدخل)</button>
+            <button class="tab-btn" onclick="switchTab('text')">2. تېكىست ۋە قۇر مەنىسى</button>
+            <button class="tab-btn" onclick="switchTab('grammar')">3. إعراب ۋە تەھلىل</button>
+            <button class="tab-btn" onclick="switchTab('exercises')">4. كۈنۈكمىلەر (تدريبات)</button>
+            <button class="tab-btn" onclick="switchTab('notes')">5. خاتىرىلىرىم</button>
+        </div>
+
+        <!-- Tab 1: Overview -->
+        <div id="tab-overview" class="tab-content active">
+            <div class="card">
+                <h3>دەرىسنىڭ ئومۇمىي مەزمۇنى ۋە ئاساسىي پىكىرى</h3>
+                <p id="overview-text">مەزمۇن يۈكلىنىۋاتىدۇ...</p>
+            </div>
+            <div class="card">
+                <h3>شائىر ياки ئاتبور توغرىسىدا</h3>
+                <p id="author-text">مەزمۇن يۈكلىنىۋاتىدۇ...</p>
+            </div>
+        </div>
+
+        <!-- Tab 2: Text & Poetry Breakdown -->
+        <div id="tab-text" class="tab-content">
+            <div class="card">
+                <h3>شېئىر ياكى نەسر تېكىستى</h3>
+                <div class="arabic-verse" id="main-arabic-text">...</div>
+            </div>
+            <div class="card">
+                <h3>قۇرۇمۇ-قۇر مەنىسى ۋە لۇغەت شەرھى</h3>
+                <div class="verse-breakdown" id="verse-breakdown-container">
+                    <!-- Breakdown items -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Grammar & I'rab -->
+        <div id="tab-grammar" class="tab-content">
+            <div class="card">
+                <h3>گرامماتىكىلىق تەھلىل (الإعراب) ۋە سەنئەتلەر</h3>
+                <div id="grammar-container">
+                    <!-- I'rab items -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Exercises -->
+        <div id="tab-exercises" class="tab-content">
+            <div class="card">
+                <h3>دەرىس كۈنۈكمىلىرى ۋە جاۋابلىرى (الاستيعاب والفهم والتحليل)</h3>
+                <div id="exercises-container">
+                    <!-- Exercises -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: Personal Notes -->
+        <div id="tab-notes" class="tab-content">
+            <div class="card">
+                <h3>بۇ دەرىس توغرىسىداخاتىرىلىرىم</h3>
+                <p>بۇ يەرگە ئۆزىڭىز چۈشەنمىگەن نۇقتىلارنى ياكى مۇھىم ئەسلىتمىلەرنى يازسىڭىز، توركۆرگۈچىڭىزدە ئاپتوماتىك ساقلىنىدۇ.</p>
+                <textarea class="note-input" id="user-note" placeholder="خاتىرىڭىزنى بۇ يەرگە يېزىڭ..." oninput="saveNote()"></textarea>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Database of Book Lessons based on "كتاب العربي علمي باك 2026"
+        const bookData = [
+            {
+                id: "unit1-intro",
+                unit: "الوحدة الأولى : قضايا وطنية وقومية",
+                title: "قراءة تمهيدية: أدب القضايا الوطنية والقومية",
+                overview: "بۇ باب دەرىسلىكى ئەرەب دۇنياسىدىكى مىللىي ۋە ۋەtەنپەرۋەرلىك ئەدەبىياتىنىڭ نشأة (تەبىئىتى ۋە پەيدا بولۇشى)، 19-ئەسىردىكى قومىي шېئىرىيەت، ئىبراھىم اليազجي نىڭ «تنبهوا واستفيقوا أيها العرب» قاتارلىق مەشھۇر شېئىرلىرى ۋە پەلەستىن دەۋاسى ئەدەبىياتىنىڭ باسقۇچلىرىنى تونۇشتۇرىدۇ[span_2](start_span)[span_2](end_span)[span_3](start_span)[span_3](end_span).",
+                author: "سۈرىيە מائارىپ مىنىستىرلىقى تەھرىر ھەيئىتى - تۈرلۈك ئەدەبىي تارىخ مەنبەلىرى.",
+                arabicText: "تَنَبَّهوا وَاستَفيقوا أَيُّهَا العَرَبُ ... فَقَد طَمَى الخَطبُ حَتَّى غاصَتِ الرُّكَبُ",
+                breakdown: [
+                    { line: "تَنَبَّهوا وَاستَفيقوا أَيُّهَا العَرَبُ", meaning: "ئى ئەرەبلەر، ئويغىنىڭلار ۋە غەپلەتتىن سەگەكلىشىڭلار!", irab: "فعل أمر مبني على حذف النون، وواو الجماعة فاعل." },
+                    { line: "فَقَد طَمَى الخَطبُ حَتَّى غاصَتِ الرُّكَبُ", meaning: "چۈنكى مۈشكۈلات ۋە بالايى-ئاپەت شۇنچە ئېشىپ كەتتىكى، ھەتتا تىزغىچە قاپلىدى.", irab: "قد: حرف تحقيق. طمى: فعل ماض مبني على الفتح المقدر." }
+                ],
+                grammar: "مىللىي שېئىرىيەت ئاساسلىرى، خىتاب ئۇسلۇبى (النداء) ۋە ئۈندەش جۈملىلىرىنىڭ تەھلىلى.",
+                exercises: "1. ما الملامح الأولى للشعر القومي العربي؟ أين ظهرت؟\n2. اذكر الأسباب التي جعلت قصيدة اليازجي تكتسب أهمية خاصة."
+            },
+            {
+                id: "unit1-ors",
+                unit: "الوحدة الأولى : قضايا وطنية وقومية",
+                title: "نص أدبي: عرس المجد (عمر أبو ريشة)",
+                overview: "شائىر عمر أبو ريشة نىڭ بۇ شېئىرى سۈرىيەنىڭ பிரانسىيە müstecemirligidin (مستعمرىسىدىن) پۈتۈنلەي قۇتۇلۇپ، 1946-يىلى 17-نەسران (آپرېل) كۈنى قولغا كەلتۈرگەن شانلىق جلاء (باستۇرۇشنىڭ تۈگىشى ۋە مۇستەقىللىق) بايرىمىنى تەبرىكلەش ئۈچۈن يېزىلغان[span_4](start_span)[span_4](end_span).",
+                author: "عمر أبو ريشة (1910-1990 م): سۈرىيەلىك مەشھۇر شائىر، منبج ئەتراپىدا туغۇلغان، ھەربىي ۋە ۋەتەنپەرۋەرلىك שېئىرىيىتىدە پارلاق ئىز قالدۇرغان[span_5](start_span)[span_5](end_span).",
+                arabicText: "يا عَرُوسَ المَجْدِ تِيهِي وَاسْحَبِي ... في مَغانِينا ذُيُولَ الشُّهُبِ\nلن تَرَي حَفْنَةَ رَمْلٍ فَوقَها ... لَمْ تُعَطَّر بِدِمَا حُرِّ أَبِي",
+                breakdown: [
+                    { line: "يا عَرُوسَ المَجْدِ تِيهِي وَاسْحَبِي", meaning: "ئى شان-شەرەپنىڭ كېلىنى! (مۇستەقىللىق)، مەغرۇرلان ۋە ماكانلىرىمىزدا يۇلتۇز ئېتەكلىرىڭنى سۆرەپ يۈر.", irab: "يا: حرف نداء. عروس: منادى منصوب، وهو مضاف." },
+                    { line: "لن تَرَي حَفْنَةَ رَمْلٍ فَوقَها لَمْ تُعَطَّر بِدِمَا حُرِّ أَبِي", meaning: "بۇ زېمىندا شۇنداق بىر ئۇشتۇمتۇم توپا ھەم يوقكى، ئۇ ئەركىن ۋە غۇرۇرلۇق بىر قەھرىماننىڭ قانى بىلەن پۇراقتىلمىغان بولسۇن.", irab: "لن: حرف نصب واستقبال. ترى: فعل مضارع منصوب بحذف النون." }
+                ],
+                grammar: "الحال (ھال مىساللىرى)، لا النافية للجنس، وعلانات الإعراب الفرعية.",
+                exercises: "1. ما الفكرة العامة التي بني عليها النص؟\n2. إلام دعا الشاعر الحرية في المقطع الأول؟ ولماذا؟\n3. استخرج من المقطع الأول صورة بيانية وبين وظيفتها."
+            },
+            {
+                id: "unit1-jisr",
+                unit: "الوحدة الأولى : قضايا وطنية وقومية",
+                title: "نص أدبي: الجسر (محمود درويش)",
+                overview: "پەلەستىنلىك ئۇلۇغ شائىر محمود درويش نىڭ بۇ ئەسىرى 1948-يىلدىكى نەكسە ۋە كۆچمەنلىك پاجىئەسىدىن كېيىن، پەلەستىنلىكلەرنىڭ ئۆز ۋەتىنىگە قايتىش ئۈچۈن كۆۋرۈكتىن ئۆتۈش يولىدىكى ακارد (ئىرادە) ۋە قەھرىمانلىقىنى سۈرەت قىلىدۇ[span_6](start_span)[span_6](end_span).",
+                author: "محمود درويش (1941-2008 م): پەلەستىننىڭ دۇنياۋى شائىرى، قارىغۇلارچە זۆلۈمگە قارشى تۇرۇش ئەدەبىياتىنىڭ სიმۋولى[span_7](start_span)[span_7](end_span).",
+                arabicText: "مَشْياً عَلَى الأَقْدَامِ أَوْ زَحْفَاً عَلَى الأَيْدِي نَعُودُ ... قالوا وَكَانَ الصَّحْرُ يَضْمُرُ وَالمَسَاءُ يداً تَقُودُ",
+                breakdown: [
+                    { line: "مَشْياً عَلَى الأَقْدَامِ أَوْ زَحْفَاً عَلَى الأَيْدِي نَعُودُ", meaning: "پۇتىمىزدا مېڭىپ ياكى قولىمىزدا ئېغىپ بولسىمۇ، بىز (ۋەتىنىمىزگە) قايتىمىز، دەپ كىشىلەر ئېيتىشتى.", irab: "مشياً: مفعول مطلق لفعل محذوف، أو حال منصوب." },
+                    { line: "وَكَانَ الصَّحْرُ يَضْمُرُ وَالمَسَاءُ يداً تَقُودُ", meaning: "ئۇ ۋاقىتتا سەھرا كىچىكلەۋاتقاندەك، كەچ بولسا باشلاپ بېرىۋاتقان بىر قولدەك ئىدى.", irab: "كان: فعل ماض ناقص. الصحر: اسم كان مرفوع." }
+                ],
+                grammar: "أقسام الإعراب، الجمل التي لها محل والتي لا محل لها من الإعراب.",
+                exercises: "1. ما القضية التي يعرضها النص؟\n2. حدد طرفي الصراع في النص.\n3. ما مراحل العودة كما عرضها النص؟"
+            },
+            {
+                id: "unit2-intro",
+                unit: "الوحدة الثانية : الغربة والاغتراب",
+                title: "قراءة تمهيدية: الأدب المهجري والمدارس المهجرية",
+                overview: "19-ئەسىرنىڭ ئاخىرىدىن باشلاپ ئەرەب دۇنياسىدىن (بولۇپمۇ سۈرىيە ۋە لىۋاندىن) ئامېرىكا قىتئەسىگە كۆچكەن ياش ئادبىيلار قۇرغان «الرابطة القلمية» (شىمالىي مەھجەر) ۋە «العصبة الأندلسية» (جەنۇبىي مەھجەر) نىڭ تارىخى، سۈرگۈن ۋە غەربتە ياشاش ئازابى، ھىجران ۋە ۋەtەن سېغىنىشى شېئىرىيىتى[span_8](start_span)[span_8](end_span)[span_9](start_span)[span_9](end_span).",
+                author: "مۇتەخەسسىس تەتقىقاتچىلار (عيسى الناعوري، د. عمر الدقاق)[span_10](start_span)[span_10](end_span).",
+                arabicText: "أَحاضِرٌ أَنتَ أَم بادٍ؟ أَمُهْتَجِرٌ فِي الغَرْبِ؟ أَم هايِمٌ فِي بَيْدِ قَحْطَانِ؟",
+                breakdown: [
+                    { line: "خصائص الأدب المهجري", meaning: "مەھجەر ئەدەبىياتىنىڭ ئاساسلىق ئالاھىدىلىكى: تەبىئەتكە ئاشىق بولۇش، ئىنسانپەرۋەرلىك، ۋەتەن ھىجرانى ۋە ئەنئەنىۋى قېلىپلاردىن قۇتۇلۇش.", irab: "أدب وجداني إنساني صوفي." }
+                ],
+                grammar: "أدوات الاستفهام وتفصيل إعرابها، النفي بـ (ليس، ما، لا، لم).",
+                exercises: "1. تحدث عن أثر العامل الاقتصادي والاجتماعي في هجرة الأدباء.\n2. قارن بين الرابطة القلمية والعصبة الأندلسية."
+            },
+            {
+                id: "unit3-intro",
+                unit: "الوحدة الثالثة : فن الرواية",
+                title: "قراءة تمهيدية: نشأة وتطور فن الرواية في العرب وسورية",
+                overview: "روومان كاسسىكىسىنىڭ پەيدا بولۇشى، غەربتىكى تەرەققىياتى (ثروة الرواية)، سۈرىيەدە رومان سەنئىتىنىڭ تەرەققىي قىلىش باسقۇچلىرى، توماشفسچى ۋە تودوروف قاتارلىق شەكىلشۇناس ئالىملارنىڭ قاراشلىرى بويىچە المتن الحكائي (ۋەقەلىك مەزمۇنى) ۋە المبنى الحكائي (خطاب السرد - بايان قىلىش قۇرۇلمىسى) نى ئۆگىنىش[span_11](start_span)[span_11](end_span)[span_12](start_span)[span_12](end_span)[span_13](start_span)[span_13](end_span)[span_14](start_span)[span_14](end_span).",
+                author: "د. نضال الصالح وغيره من النقاد السوريين.",
+                arabicText: "الرواية فن نثري يعرض حكاية طويلة عن حياة شخصية أو أكثر...",
+                breakdown: [
+                    { line: "عناصر الرواية الأساسية", meaning: "1. الفكرة، 2. الحدث (المتن الحكائي)، 3. المبنى الحكائي، 4. الحبكة، 5. الشخصيات، 6. الزمان والمكان، 7. الحوار واللغة.", irab: "عناصر فنية تكاملية." }
+                ],
+                grammar: "مباحث التمييز، الحال، المفعول المطلق، والمفعول لأجله.",
+                exercises: "1. بم ارتبطت نشأة فن الرواية في الغرب؟\n2. وضح الفرق بين المتن الحكائي والمبنى الحكائي."
+            },
+            {
+                id: "unit4-intro",
+                unit: "الوحدة الرابعة : ظواهر وجدانية",
+                title: "قراءة تمهيدية: الشعر الوجداني (الغنائي)",
+                overview: "شېئىرىيەتتە ۋىجدان ۋە تۇيغۇلارنىڭ رولى، قىسقا شېئىرلار، بىرلا تەسىرگە مەركەزلەشىش، تەملىك ئوبراز، تەپەككۇر ۋە ذاتية (شەخسنى چۆرىدىگەن ھېسسىيات) قاتارلىق ئىجادىي مەكتەپ ئالاھىدىلىكلىرى[span_15](start_span)[span_15](end_span)[span_16](start_span)[span_16](end_span).",
+                author: "د. عبد القادر القط / د. أحمد زكي أبو شادي[span_17](start_span)[span_17](end_span).",
+                arabicText: "يَبْلَى عَلَى الأَيَّامِ كُلُّ جَدِيدِ ... وَيَدُ البِلَى تَلْوَى بِكُلِّ مَشِيدِ",
+                breakdown: [
+                    { line: "مفهوم الشعر الوجداني", meaning: "شائىرنىڭ ئۆز كۆكسىدىكى قىزىق تۇيغۇلارنى، مۇھەببەت، ھەسرەت، شادلۇق ياكى قايغۇلارنى ساپ غەزەل ۋە لىرىك ئۇسلۇبتا بايان قىلىشى.", irab: "أشعار ذاتية تعبيرية." }
+                ],
+                grammar: "توكيد الجمل، المصدر المؤول، وأحرف الزر الزائدة.",
+                exercises: "1. ما مفهوم الشعر الوجداني؟ وما أبرز خصائصه الفنية والمعنوية؟"
+            },
+            {
+                id: "unit5-intro",
+                unit: "الوحدة الخامسة : أدب القضايا الاجتماعية",
+                title: "قراءة تمهيدية: الأدب الاجتماعي وإصلاح المجتمع",
+                overview: "ئەدەبىيات بىلەن جەمئىيەت ئوتتۇرىسىدىكى مۇناسىۋەت، جەمئىيەتتىكى نۇقسانلار (ناپاكلىق، نامراتلىق، نادانلىق، ئاياللار ھوقۇقى، بالىلار ھوقۇقى ۋە ئىجتىمائىي ھەمكارلىق - التكافل الاجتماعي) نى تۈزەشكە چاقىرىدىغان ئىجتىمائىي ئەدەبىيات[span_18](start_span)[span_18](end_span)[span_19](start_span)[span_19](end_span)[span_20](start_span)[span_20](end_span).",
+                author: "أبي هلال العسكري، ابن قتيبة، وباحثون معاصرون[span_21](start_span)[span_21](end_span).",
+                arabicText: "بِقُوَّةِ العِلْمِ تَقْوَى شَوْكَةُ الأُمَمِ ... فَالحُكْمُ فِي الدَّهْرِ مَنْسُوبٌ إِلَى القَلَمِ",
+                breakdown: [
+                    { line: "سمات الأدب الاجتماعي", meaning: "1. معالجة قضايا واقعية، 2. وضوح المعنى وقرب الفكرة، 3. التأثير النفسي، 4. الإقناع المعلل.", irab: "أدب واقعي هادف." }
+                ],
+                grammar: "جزم الفعل المضارع، أسلوب الشرط الجازم وغير الجازم، العطف والمعطوف.",
+                exercises: "1. وضح صلة الأدب بالمجتمع.\n2. ما أبرز موضوعات الأدب الاجتماعي؟"
+            }
+        ];
+
+        let currentLessonId = "unit1-intro";
+
+        // Render Sidebar Table of Contents
+        function renderTOC() {
+            const container = document.getElementById("toc-container");
+            container.innerHTML = "";
+
+            // Group by units
+            const units = {};
+            bookData.forEach(lesson => {
+                if (!units[lesson.unit]) {
+                    units[lesson.unit] = [];
+                }
+                units[lesson.unit].push(lesson);
+            });
+
+            for (const [unitName, lessons] of Object.entries(units)) {
+                const unitDiv = document.createElement("div");
+                unitDiv.className = "unit-section";
+                
+                const titleDiv = document.createElement("div");
+                titleDiv.className = "unit-title";
+                titleDiv.innerHTML = `${unitName} <span>▼</span>`;
+                
+                const ul = document.createElement("ul");
+                ul.className = "lesson-list";
+
+                lessons.forEach(lesson => {
+                    const li = document.createElement("li");
+                    li.className = `lesson-item ${lesson.id === currentLessonId ? 'active' : ''}`;
+                    li.innerText = lesson.title;
+                    li.onclick = () => selectLesson(lesson.id);
+                    ul.appendChild(li);
+                });
+
+                unitDiv.appendChild(titleDiv);
+                unitDiv.appendChild(ul);
+                container.appendChild(unitDiv);
+            }
+        }
+
+        // Select and Load Lesson
+        function selectLesson(id) {
+            currentLessonId = id;
+            const lesson = bookData.find(l => l.id === id);
+            if (!lesson) return;
+
+            // Update UI headers
+            document.getElementById("lesson-title").innerText = lesson.title;
+            document.getElementById("lesson-subtitle").innerText = lesson.unit;
+
+            // Tab 1: Overview
+            document.getElementById("overview-text").innerText = lesson.overview;
+            document.getElementById("author-text").innerText = lesson.author;
+
+            // Tab 2: Text
+            document.getElementById("main-arabic-text").innerText = lesson.arabicText;
+            
+            const breakdownContainer = document.getElementById("verse-breakdown-container");
+            breakdownContainer.innerHTML = "";
+            lesson.breakdown.forEach(item => {
+                const box = document.createElement("div");
+                box.className = "verse-box";
+                box.innerHTML = `
+                    <div class="arabic-line">${item.line}</div>
+                    <div class="uyghur-trans">👉 مەنىسى: ${item.meaning}</div>
+                    <div class="grammar-irab">⚙️ إعراب / تەھلىل: ${item.irab}</div>
+                `;
+                breakdownContainer.appendChild(box);
+            });
+
+            // Tab 3: Grammar
+            document.getElementById("grammar-container").innerHTML = `<p>${lesson.grammar}</p>`;
+
+            // Tab 4: Exercises
+            document.getElementById("exercises-container").innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit;">${lesson.exercises}</pre>`;
+
+            // Tab 5: Notes & Bookmark status
+            const savedNote = localStorage.getItem(`note_${id}`) || "";
+            document.getElementById("user-note").value = savedNote;
+
+            const isBookmarked = localStorage.getItem(`bm_${id}`) === "true";
+            const bmBtn = document.getElementById("bookmark-btn");
+            if (isBookmarked) {
+                bmBtn.classList.add("bookmarked");
+                bmBtn.innerText = "⭐ ساقلانغان (بەلگە قويүлغان)";
+            } else {
+                bmBtn.classList.remove("bookmarked");
+                bmBtn.innerText = "⭐ سەل تۇرۇپ كۆرۈش (ساقلاش)";
+            }
+
+            renderTOC();
+        }
+
+        // Switch Tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Save Notes Locally
+        function saveNote() {
+            const noteText = document.getElementById("user-note").value;
+            localStorage.setItem(`note_${currentLessonId}`, noteText);
+        }
+
+        // Bookmark Toggle
+        function toggleBookmark() {
+            const currentBm = localStorage.getItem(`bm_${currentLessonId}`) === "true";
+            localStorage.setItem(`bm_${currentLessonId}`, !currentBm);
+            selectLesson(currentLessonId);
+        }
+
+        // Initial Load
+        window.onload = function() {
+            renderTOC();
+            selectLesson("unit1-intro");
+        };
+    </script>
+</body>
+</html>
